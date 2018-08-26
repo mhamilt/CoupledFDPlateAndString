@@ -26,8 +26,8 @@ files for generating plots for analysing model behaviour.
 supporting documentation in pdf and markdown format
 
 # Example Plots
-<img src="https://github.com/mhamilt/CoupledFDPlateAndString/blob/master/images/plate_wave.png" width="50%" height="50%">
-<img src="https://github.com/mhamilt/CoupledFDPlateAndString/blob/master/images/string_plate.png" width="50%" height="50%">
+<img src="https://github.com/mhamilt/CoupledFDPlateAndString/blob/master/images/plate_wave.pdf" width="50%" height="50%">
+<img src="https://github.com/mhamilt/CoupledFDPlateAndString/blob/master/images/string_plate.pdf" width="50%" height="50%">
 
 # Version Notes
 NOTE: The included files were created with MATLAB 2016b on macOS. Some behaviour may be slightly different, particularly with
