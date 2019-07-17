@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <!-- META -->
+    <meta charset="UTF-8">
+    <meta name="description" content="finite difference scheme">
+    <meta name="keywords" content="HTML,CSS,fdtd,finite difference">
+    <meta name="author" content="Matthew Hamilton">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finite Difference Derivations</title>
+    <!-- SCRIPT -->
+    <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.5/css/bootstrap.css">
+  </head>
+
+  <body>
+    <nav class="navbar navbar-dark navbar-full bg-inverse" style="">
+      <a class="navbar-brand" href="#">Finite Difference Derivations</a>
+      <ul class="nav navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/mhamilt/CoupledFDPlateAndString">GitHub</a>
+        </li>
+      </ul>
+    </nav>
+    <div class="container">
+      <div id="jumbo-canvas" class="jumbotron">
+        <div class=" row">
+          <h1>
+            Finite Difference Derivations
+          </h1>
+          <p class="lead">
+            Derivations for Finite Difference Schemes and Force Coupling. The current time step, marked by superscript \(n\) is ommitted for clarity where relevenat. Right click equations for output options.
+          </p>
+        </div>
+        <div class=" row">
+          <h2>
+            1D Wave
+          </h2>
+          <p>
+            <span style="font-size:0.9em; line-height:0%">
+              $$\begin{eqnarray}
+              \require{cancel}
+              \delta_{tt}w &=& c^{2}\delta_{xx}w \nonumber \\
+              \frac{2}{k}(\delta_{t\cdot} - \delta_{t-})w &=& c^{2}\delta_{xx}w \nonumber \\
+              &=& \frac{kc^{2}}{2}\delta_{xx}w + \delta_{t-}w \nonumber \\
+              &=& \frac{kc^{2}}{2h_{s}}(\delta_{x+}-\delta_{x-})w + \delta_{t-}w \nonumber \\
+              &=& \frac{kc^{2}}{2h_{s}}(\delta_{x+}w-\delta_{x-}w) + \delta_{t-}w \nonumber \\
+              \frac{1}{2k}(w^{n+1} - w^{n-1}) &=& \frac{kc^{2}}{2h_{s}}(\delta_{x+}w-\delta_{x-}w) + \delta_{t-}w \nonumber \\
+              \frac{1}{2k}(w^{n+1} - w^{n-1}) &=& \frac{kc^{2}}{2h_{s}}(\delta_{x+}w-\delta_{x-}w) + \frac{1}{k}(w^{n} - w^{n-1}) \nonumber \\
+              w^{n+1} - w^{n-1} &=& 2k(\frac{kc^{2}}{2h_{s}}(\delta_{x+}w-\delta_{x-}w) + \frac{1}{k}(w^{n} - w^{n-1})) \nonumber \\
+              w^{n+1} &=& 2k(\frac{kc^{2}}{2h_{s}}(\delta_{x+}w-\delta_{x-}w) + \frac{1}{k}(w^{n} - w^{n-1})) + w^{n-1} \nonumber \\
+              w^{n+1} &=& \cancel{2}k(\frac{kc^{2}}{\cancel{2}h_{s}}(\delta_{x+}w-\delta_{x-}w) + \frac{2}{k}(w^{n} - w^{n-1})) + w^{n-1} \nonumber \\
+              w^{n+1} &=& \cancel{k}(\frac{(kc)^{2}}{h_{s}}(\delta_{x+}w-\delta_{x-}w) + \frac{2}{\cancel{k}}w^{n} - 2w^{n-1} + w^{n-1} \nonumber \\
+              w^{n+1} &=& \frac{(kc)^{2}}{h_{s}}(\delta_{x+}w-\delta_{x-}w) + 2w^{n} - \cancel{2}w^{n-1} + \cancel{w^{n-1}} \nonumber \\
+              w^{n+1} &=& \frac{(kc)^{2}}{h_{s}}(\delta_{x+}w-\delta_{x-}w) + 2w^{n} - w^{n-1} \nonumber \\
+              w^{n+1} &=& \lambda^{2}D_{xx}w + 2w^{n} - w^{n-1},\quad \lambda = \frac{kc}{h_{s}}\nonumber \\
+              \end{eqnarray}$$
+            </span>
+          </p>
+          <hr />
+        </div>
+        <div class=" row">
+          <h2>
+            Stiff String
+          </h2>
+          <p>
+            <span style="font-size:0.9em; line-height:0%">
+              $$\begin{eqnarray}
+              \require{cancel}
+              \delta_{tt}w &=& c^{2}\delta_{xx}w - \kappa^{2}\delta_{xxxx}w \nonumber \\
+              \frac{2}{k}(\delta_{t\cdot} - \delta_{t-})w &=& c^{2}\delta_{xx}w + \kappa^{2}\delta_{xxxx}w \nonumber \\
+              w^{n+1} &=& (kc)^{2}\delta_{xx}w - (k\kappa)^{2}\delta_{xxxx}w \nonumber \\
+              w^{n+1} &=& (\lambda)^{2}D_{xx}w - (\mu)^{2}D_{xxxx}w \nonumber,\quad \lambda = \frac{kc}{h_{s}}, \quad \mu = \frac{k\kappa}{h^{2}_{s}} \\
+              \end{eqnarray}$$
+            </span>
+          </p>
+          <hr />
+        </div>
+        <div class=" row">
+          <h2>
+            Kirchoff Thin Plate
+          </h2>
+          <p>
+            <span style="font-size:0.9em; line-height:0%">$$\ddot{u} = -\kappa^{2}\Delta\Delta u, \quad \kappa = \sqrt{\frac{E H^2}{12\rho(1- \nu)} }$$</span>
+          </p>
+          <hr />
+        </div>
+        <div class=" row">
+          <h2>
+            1D Wave w/ Coupling
+          </h2>
+          <h3>
+            Coupling Conditions
+          </h3>
+          <span style="font-size:0.9em; line-height:0%">
+            $$\begin{eqnarray}
+            \require{cancel}
+            \delta_{t\cdot}w &=& J^{T}\delta_{t\cdot}u \nonumber \\
+            f &=& T\delta_{x-}w_{0} \nonumber \\
+            \end{eqnarray}$$
+          </span>
+          <p class="lead">
+            From 1D Wave Equation above
+            <span style="font-size:0.9em; line-height:0%">
+              $$\begin{eqnarray}
+              \require{cancel}
+              w^{n+1} &=& \frac{(kc)^{2}}{h_{s}}(\delta_{x+}w-\delta_{x-}w) + 2w^{n} - w^{n-1} \nonumber \\
+              \end{eqnarray}$$
+            </span>
+            Translates to
+            <span style="font-size:0.9em; line-height:0%">
+              $$\begin{eqnarray}
+              \require{cancel}
+              w_{0}^{n+1} &=& \frac{(kc)^{2}}{h_{s}}(\delta_{x+}w_{0}-\delta_{x-}w_{0}) + 2w_{0}^{n} - w_{0}^{n-1}, \quad w_{0}^{n} &=& F \nonumber \\
+              w_{0}^{n+1} &=& \frac{(kc)^{2}}{h_{s}}(\delta_{x+}w_{0}-\frac{f}{T}) + 2w_{0}^{n} - w_{0}^{n-1} \nonumber \\
+              w_{0}^{n+1} &=& \lambda\delta_{x+}w_{0} - \frac{(kc)^{2}}{h_{s}T}f) + 2w_{0}^{n} - w_{0}^{n-1} \nonumber \\
+              \end{eqnarray}$$
+            </span>
+          </p>
+          <hr />
+        </div>
+        <div class=" row">
+          <h2>
+            Stiff String w/ Coupling
+          </h2>
+          <h3>
+            Coupling Conditions
+          </h3>
+          <span style="font-size:0.9em; line-height:0%">
+            $$\begin{eqnarray}
+            \require{cancel}
+            f &=& T\delta_{x-}w_{0} - EI\delta_{xxx}w_{0} \nonumber \\
+            \frac{dE_{s}}{dt} &=& \dot{w_0}(Tw^{\prime} - EIw^{\prime\prime\prime}) + EI\dot{w^{\prime}}w^{\prime\prime} \nonumber \\
+            f &=& \dot{w_0}(Tw^{\prime} - EIw^{\prime\prime\prime}) \nonumber \\
+            \delta_{t\cdot}w_{0} &=& J^{T}\delta_{t\cdot}u, \quad \delta_{xx}w_0 = 0 \nonumber \\
+            \end{eqnarray}$$
+          </span>
+          <h3>
+            Definitions
+          </h3>
+          <p class="lead">
+            <span style="font-size:0.9em; line-height:0%">
+              $$\begin{eqnarray}
+              \delta_{xxxx} &=& \delta_{xx}\delta_{xx} \nonumber \\
+              &=& \frac{2}{h}(\delta_{x\cdot} - \delta_{x-})\delta_{xx} \nonumber \\
+              \end{eqnarray}$$
+            </span>
+
+            Stiff String
+            $$\delta_{tt}w = c^{2}\delta_{xx}w - \kappa^{2}\delta_{xxxx}w, \quad c = \sqrt{\frac{T}{\rho A}}, \quad \kappa = \sqrt{\frac{EI}{\rho AL^{4}}}$$
+
+            Coupling, omitting \(w_{0}\) for clarity
+            <span style="font-size:0.9em; line-height:0%">
+              $$\begin{eqnarray}
+              \require{cancel}
+              \rho H \delta_{tt} &=& T\delta_{xx} - EI\delta_{xxxx} \nonumber \\
+              &=& \frac{2T}{h}(\delta_{x\cdot}-\delta_{x-}) - EI\frac{2}{h}(\delta_{x\cdot}-\delta_{x-})\delta_{xx} \nonumber \\
+              &=& \frac{2T}{h}\delta_{x\cdot}-\frac{2T}{h}\delta_{x-} - \frac{2EI}{h}(\delta_{x\cdot}\delta_{xx})-\frac{2EI}{h}\delta_{x-}\delta_{xx} \nonumber \\
+              &=& \frac{2}{h}(T\delta_{x\cdot}- EI(\delta_{x\cdot}\delta_{xx})- (T\delta_{x-} - EI\delta_{x-}\delta_{xx})), \quad f &=& T\delta_{x-}w_{0} - EI\delta_{xxx}w_{0} \nonumber \\
+              &=& \frac{2}{h}(T\delta_{x\cdot}- EI(\delta_{x\cdot}\delta_{xx})- (T\delta_{x-} - EI\delta_{x-}\delta_{xx})) \nonumber \\
+              \end{eqnarray}$$
+            </span>
+          </p>
+          <hr />
+        </div>
+        <div class=" row">
+          <h2>
+            Kirchoff Thin Plate w/ Coupling
+          </h2>
+          <p>
+            <span style="font-size:0.9em; line-height:0%">$$\ddot{u} = -\kappa^{2}\Delta\Delta u, \quad \kappa = \sqrt{\frac{E H^2}{12\rho(1- \nu)} }$$</span>
+          </p>
+          <hr />
+        </div>
+      </div>
+    </div>
+
+  </body>
+
+</html>
