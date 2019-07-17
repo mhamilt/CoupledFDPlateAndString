@@ -141,29 +141,32 @@
           <h3>
             Definitions
           </h3>
+          <span style="font-size:0.9em; line-height:0%">
+            $$\begin{eqnarray}
+            \delta_{xxxx} &=& \delta_{xx}\delta_{xx} \nonumber \\
+            &=& \frac{2}{h}(\delta_{x\cdot} - \delta_{x-})\delta_{xx} \nonumber \\
+            \end{eqnarray}$$
+          </span>
           <p class="lead">
-            <span style="font-size:0.9em; line-height:0%">
-              $$\begin{eqnarray}
-              \delta_{xxxx} &=& \delta_{xx}\delta_{xx} \nonumber \\
-              &=& \frac{2}{h}(\delta_{x\cdot} - \delta_{x-})\delta_{xx} \nonumber \\
-              \end{eqnarray}$$
-            </span>
-
             Stiff String
-            $$\delta_{tt}w = c^{2}\delta_{xx}w - \kappa^{2}\delta_{xxxx}w, \quad c = \sqrt{\frac{T}{\rho A}}, \quad \kappa = \sqrt{\frac{EI}{\rho AL^{4}}}$$
-
-            Coupling, omitting \(w_{0}\) for clarity
-            <span style="font-size:0.9em; line-height:0%">
-              $$\begin{eqnarray}
-              \require{cancel}
-              \rho H \delta_{tt} &=& T\delta_{xx} - EI\delta_{xxxx} \nonumber \\
-              &=& \frac{2T}{h}(\delta_{x\cdot}-\delta_{x-}) - EI\frac{2}{h}(\delta_{x\cdot}-\delta_{x-})\delta_{xx} \nonumber \\
-              &=& \frac{2T}{h}\delta_{x\cdot}-\frac{2T}{h}\delta_{x-} - \frac{2EI}{h}(\delta_{x\cdot}\delta_{xx})-\frac{2EI}{h}\delta_{x-}\delta_{xx} \nonumber \\
-              &=& \frac{2}{h}(T\delta_{x\cdot}- EI(\delta_{x\cdot}\delta_{xx})- (T\delta_{x-} - EI\delta_{x-}\delta_{xx})), \quad f &=& T\delta_{x-}w_{0} - EI\delta_{xxx}w_{0} \nonumber \\
-              &=& \frac{2}{h}(T\delta_{x\cdot}- EI(\delta_{x\cdot}\delta_{xx})- (T\delta_{x-} - EI\delta_{x-}\delta_{xx})) \nonumber \\
-              \end{eqnarray}$$
-            </span>
           </p>
+          $$\delta_{tt}w = c^{2}\delta_{xx}w - \kappa^{2}\delta_{xxxx}w, \quad c = \sqrt{\frac{T}{\rho A}}, \quad \kappa = \sqrt{\frac{EI}{\rho AL^{4}}}$$
+
+          <p class="lead">
+            Coupling, omitting \(w_{0}\) for clarity
+          </p>
+          <span style="font-size:0.9em; line-height:0%">
+            $$\begin{eqnarray}
+            \require{cancel}
+            \rho H \delta_{tt} &=& T\delta_{xx} - EI\delta_{xxxx} \nonumber \\
+            &=& \frac{2T}{h}(\delta_{x\cdot}-\delta_{x-}) - EI\frac{2}{h}(\delta_{x\cdot}-\delta_{x-})\delta_{xx} \nonumber \\
+            &=& \frac{2T}{h}\delta_{x\cdot}-\frac{2T}{h}\delta_{x-} - \frac{2EI}{h}(\delta_{x\cdot}\delta_{xx})-\frac{2EI}{h}\delta_{x-}\delta_{xx} \nonumber \\
+            &=& \frac{2}{h}(T\delta_{x\cdot}- EI(\delta_{x\cdot}\delta_{xx})- (T\delta_{x-} - EI\delta_{x-}\delta_{xx})), \quad f &=& T\delta_{x-}w_{0} - EI\delta_{xxx}w_{0} \nonumber \\
+            &=& \frac{2}{h}(T\delta_{x\cdot}- EI(\delta_{x\cdot}\delta_{xx})- (T\delta_{x-} - EI\delta_{x-}\delta_{xx})) \nonumber \\
+            &=& \frac{2}{h}(T\delta_{x\cdot}- EI(\delta_{x\cdot}\delta_{xx}) - f) \nonumber \\
+            \end{eqnarray}$$
+          </span>
+
           <hr />
         </div>
         <div class=" row">
