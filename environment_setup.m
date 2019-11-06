@@ -6,3 +6,4 @@
 addpath('functions/');
 addpath('midi/');
 addpath('calibration/');
+addpath('schemes/');
