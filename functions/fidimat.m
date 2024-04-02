@@ -90,17 +90,19 @@ function outM = fidimat(arg1,arg2,arg3,arg4)
     case 'xx'
 
       XX = spdiags([ones(l,1),-2*ones(l,1),ones(l,1)],-1:1,speye(l));
-      XX(1,2) = (bctype-1)*2; XX(l,l-1) = (bctype-1)*2;
-      % if bctype == 0
-      %   XX([1 end],:) = 0;
-      % end
+      
       outM = XX;
 
     case 'xxxx'
       XX = spdiags([ones(l,1),-2*ones(l,1),ones(l,1)],-1:1,speye(l));
-      XX(1,2) = (bctype-1)*2; XX(l,l-1) = (bctype-1)*2;
-      outM = XX;
-      outM = XX^2;
+      XXXX = XX^2;
+
+      if (bctype==2)
+        XXXX(1,1) = 7;
+        XXXX(end,end) = 7;
+      end
+
+      outM = XXXX;
 
     case 'I'
       I = speye(ss);
