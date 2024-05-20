@@ -4,15 +4,15 @@
 %%%%%
 %%%%% A Kirchhoff Thin Plate FDTD Model
 
-clear all
-close all
+% clear all
+% close all
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%% Instrument File
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % midi_inst % file containing all relevent parameters for this set of schemes
-instLimMIDI
+% instLimMIDI
 SR = OSR*SR;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -59,6 +59,7 @@ st_K = sqrt(st_E.*st_I./(st_rho.*st_A));   % stiffness constant
 %%%%% grid
 
 st_hmin = sqrt(0.5* (st_c.^2*k^2+sqrt(st_c.^4*k^4+16*st_K.^2.*k.^2)) );
+
 st_N = floor(st_L./st_hmin);          % number of segments (N+1 is number of grid points)
 st_h = st_L./st_N;                    % adjusted grid spacing
 st_lambda = st_c*k./st_h;             % Courant number
@@ -403,7 +404,7 @@ close(loadBar)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-plate_string_analysis
+% plate_string_analysis
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 save_file = sprintf('%s.wav',file);

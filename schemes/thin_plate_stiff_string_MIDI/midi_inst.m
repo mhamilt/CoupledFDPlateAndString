@@ -5,11 +5,14 @@
 %%%%% Instrument file for 2D Plate
 %%%%% Contains all the parameters to run the FDTD thin plate scheme
 
-
+clear all
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%% Flags
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+addpath('../../functions/');
+addpath('../../midi/');
+addpath('../../calibration/');
+addpath('../../schemes/');
 % Conditions
 bctype = 2;          % boundary condition type: 1: simply supported, 2: clamped
 st_bctype = 1;
@@ -38,8 +41,8 @@ end
 %%%%%%%%%%%%%%%%%%%%
 
 % -----------------------READ MIDI DATA----------------------------- %
-path = 'midi/';
-file = 'chord.mid';
+path = '../../midi/';
+file = 'mood.mid';
 filename = [path file];
 BPM = 156;
 MIDI = read_midi_file(filename,BPM);

@@ -39,9 +39,9 @@ end
 
 % -----------------------READ MIDI DATA----------------------------- %
 path = 'midi/';
-file = 'chord.mid';
+file = 'mood.mid';
 filename = [path file];
-BPM = 156;
+BPM = 116;
 MIDI = read_midi_file(filename,BPM);
 jiggle = 3000; % make plucks out of time, in samples
 % ---------------------------------------------------- %
@@ -53,8 +53,8 @@ jiggle = 3000; % make plucks out of time, in samples
 %%%%%%%%% EDIT THESE %%%%%%%
 
 % simulation
-nu = .5;                     % Poisson Ratio (< .5)
-rp = [.15, .85; .85, .15];              % readout position as percentage on grid.
+nu = .3;                     % Poisson Ratio (< .5)
+rp = [.15, .25; .16, .26];    % readout position as percentage on grid.
 
 % I/O
 OSR = 1;                     % Oversampling ratio

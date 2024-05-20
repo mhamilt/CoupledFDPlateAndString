@@ -1,76 +1,58 @@
-%%%%% ASSIGNMENT 6: PMMI
 %%%%% Matthew Hamilton s0674653
-%%%%% Description:
-%%%%%
 %%%%% Finite difference string including panning, frequency dpendant loss,
 %%%%% implicit computation, string overwinding simulation
 
-clear all
-% close all
+clearvars
+close all
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%% Flags
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%% EDIT THESE %%%%%%%
-itype = 1;                  % type of input: 1: struck, 2: plucked
-bctype = 1;                  % boundary condition type: 1: simply supported, 2: clamped
-outtype = 2;                % output type: 1: string displacement, 2: string velocity
+itype = 1;           % type of input: 1: struck, 2: plucked
+bctype = 1;          % boundary condition type: 1: simply supported, 2: clamped
+outtype = 2;         % output type: 1: string displacement, 2: string velocity
 losstype = 2;
 plot_string = false;
-plot_waves = true;          % plot output waveform and Force waveform
-play = true;                 % play out audio at the end
-benchtest = false;           % turn benchtesting on to view MATLAB profiler
-%%%%%%%%% EDIT THESE %%%%%%%
+plot_waves = true;   % plot output waveform and Force waveform
+play = true;         % play out audio at the end
 
-%%START BENCH TEST%%
-if benchtest
-  profile on
-end
-%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%% Parameters
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%%%%%%%% EDIT THESE %%%%%%%
-% guitar parameters
-gauge = [20]; % list of string gauges
-tuning = {'F3'}; % list of notes in scientific notation
-
-%%% comparison
-path = 'PianoSamples/';
-file = '045.wav';
-[y1, SR1] = audioread([path file]);
+gain = 0.25;
+gauge = [70]; % list of string gauges
+tuning = {'A2'}; % list of notes in scientific notation
 
 % physical string parameters
-L = .44;                     % length (m)
-E = 2e11;                  % Young's modulus (Pa) (GPa = 1e9 Pa) of steel
-rhoP = 7850;                 % density of plain string Material
-% TT = .895                     %%TensionTweak
-loss = [100, 8; 1000 7];   % loss [freq.(Hz), T60;...]
-
+L = 1.24;                % length (m)
+E = 2e10;                % Young's modulus (Pa) (GPa = 1e9 Pa) of steel
+rhoP = 7850;             % density of plain string Material
+loss = [100, 8; 1000 7.5]; % loss [freq.(Hz), T60;...]
 
 % I/O
-OSR = 1;                            % Oversampling ratio
-SR = 44.1e3;                        % sample rate (Hz)
-SR = SR*OSR;                        % redefine SR by OSR
-xi = 0.8;                           % coordinate of excitation (normalised, 0-1)
-famp = 1;                           % peak amplitude of excitation (N)
-dur = 0.001;                       % duration of excitation (s)
-xo = 0.45;                    % coordinate of output (normalised, 0-1)
-window_dur = 0.02;          % duration of fade-out window (s). See Q6.
+OSR = 1;           % Oversampling ratio
+SR = 44.1e3;       % sample rate (Hz)
+xi = 0.8;          % coordinate of excitation (normalised, 0-1)
+famp = 1;          % peak amplitude of excitation (N)
+dur = 0.001;       % duration of excitation (s)
+xo = 0.125;         % coordinate of output (normalised, 0-1)
+window_dur = 0.02; % duration of fade-out window (s). See Q6.
 %%%%%%%%% EDIT THESE %%%%%%%
 
 
 %%%%%%%%% DONT EDIT THESE %%%%%%%
-r = (gauge * 2.54e-5)*.5;   % string core radius (m)
+SR = SR * OSR;            % redefine SR by OSR
+r = (gauge * 2.54e-5)*.5; % string core radius (m)
 f0 = note2hz(tuning);     % Hz value of note based on function at EOF
-strNum = length(f0);            % number of strings
-rho = repmat(rhoP,1,strNum);       % density for each string: Deafult is rhoP
-exc_st = ([1:strNum]*.5)-.5;        % start times of excitation (s)
-Tf = max(loss(:,2)) + max(exc_st);    % duration of simulation (s)
-T = pi*rho.*((f0*2*L).^2).*(r.^2);    % Tension Newtons
-T = ((2*f0.*r.*L).^2)*pi*rho; % Tension in Newtons
+strNum = length(f0);         % number of strings
+rho = repmat(rhoP,1,strNum); % density for each string: Deafult is rhoP
+exc_st = ([1:strNum]*.5)-.5; % start times of excitation (s)
+Tf = max(loss(:,2)) + max(exc_st); % duration of simulation (s)
+T = pi*rho.*((f0*2*L).^2).*(r.^2); % Tension Newtons
+% T = ((2*f0.*r.*L).^2)*pi*rho; % Tension in Newtons
 %%%%%%%%% DONT EDIT THESE %%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -142,6 +124,10 @@ end
 
 %panning
 pan = linspace(-1, 1, length(f0));
+if length(f0) == 1
+  pan = 0;
+end
+
 panLR = [cos((pi*(pan+1)/4)); sin((pi*(pan+1)/4))];
 
 
@@ -227,11 +213,11 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Create Force Signal
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-f = sparse(Nf,strNum);                   % input Force signal
-durint = floor(dur*SR);                 % duration of Force signal, in samples
-exc_st_int = floor(exc_st*SR);          % start time index for excitation
+f = sparse(Nf,strNum);                % input Force signal
+durint = floor(dur*SR);               % duration of Force signal, in samples
+exc_st_int = floor(exc_st*SR);        % start time index for excitation
 exc_end_int = exc_st_int+durint-1;
-d0 = (k^2./(h.*rho.*A*(1+ k*sig0)));               % Input coefficient
+d0 = (k^2./(h.*rho.*A.*(1+ k*sig0))); % Input coefficient
 
 for en = 1:strNum
   n = (exc_st_int(en):exc_end_int(en))+1;
@@ -264,11 +250,9 @@ sI = speye(N);
 
 %%%%% Coefficient Matrices
 AA = 1/(1+k*sig0);
-BB = ((lambda^2 * Dxx) + (2*sI) - (mu^2*Dxxxx) + ((2*sig1*k/h^2)*Dxx)) *AA;
+BB = ((lambda^2 * Dxx) + (2*sI) - (mu^2*Dxxxx) + ((2*sig1*k/h^2)*Dxx)) * AA;
 CC = -((1-k*sig0)*sI + ((2*sig1*k/h^2)*Dxx)) * AA;
 BB([1 end],:)=0; CC([1 end],:)=0;
-
-
 
 
 %%%%% initialise scheme variables
@@ -319,29 +303,20 @@ y(end-winL+1:end,:) = y(end-winL+1:end,:).*repmat(fade,1,2); %Fade out audio at 
 
 %%%%% play sound
 if play
-  y = y/max(abs(y(:)));
-  soundsc(y,SR);
+  y = y / max(abs(y(:)));
+  sound( y * gain,SR);
 end
 
 %%%%% plot spectrum
 if plot_waves
   figure(1)
   y = (y/abs(max(y(:))));
-  y1 = (y1/abs(max(y1(:))));
-
   yfft = 10*log10(abs(fft(y(:,2))));
   plot(([0:Nf-1]'/Nf)*SR, yfft, 'k')
   fft_ax = gca;
-  % xlim([f0*.9 f0*1.1])
   xlim([0 f0*10])
   hold on
   line([f0, f0], fft_ax.YLim,'Color',[0 0 0],'LineWidth',2)
-  plot([0:length(y1)-1]*SR1/length(y1),10*log10(abs(fft(y1(:,1)))),'g')
   legend('FFT Output_{dB}','F0_{Hz}')
-  set(gcf, 'Units', 'normalized', 'Position', [0,0,1,1]); % fullscreen
-end
-
-if benchtest
-  profile viewer
-  profile off
+  % set(gcf, 'Units', 'normalized', 'Position', [0,0,1,1]); % fullscreen
 end
